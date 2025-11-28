@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIU Shuttle Service</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 25s linear infinite;
+        }
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+    
+    <!-- Tailwind Config for Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            750: '#2d3748', /* Custom shade for hover states in dark mode */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col p-4 md:p-8 transition-colors duration-300">
+
+    <div class="max-w-5xl mx-auto w-full space-y-6 flex-grow">
+        
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden transition-all duration-300">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <!-- Logo Area -->
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm border border-white/20">
+                        <i data-lucide="bus" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">University Shuttle</h1>
+                        <p class="text-orange-100 mt-1 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            Live Schedule & Updates
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Right Side Widgets -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
+                    
+                    <!-- Weather Widget -->
+                    <div class="bg-orange-700/30 rounded-lg p-3 backdrop-blur-sm border border-orange-400/30 flex items-center gap-3 min-w-[160px]">
+                        <div class="p-2 bg-white/10 rounded-lg">
+                            <i id="weather-icon" data-lucide="cloud" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <div id="weather-temp" class="text-2xl font-bold leading-none">--°C</div>
+                            <div class="text-xs text-orange-200 flex items-center gap-2 mt-1">
+                                <span class="flex items-center gap-0.5"><i data-lucide="wind" class="w-3 h-3"></i> <span id="weather-wind">--</span></span>
+                                <span class="flex items-center gap-0.5"><i data-lucide="droplets" class="w-3 h-3"></i> <span id="weather-humidity">--</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Widget -->
+                    <div class="bg-orange-700/30 rounded-lg p-3 backdrop-blur-sm border border-orange-400/30 flex-1 md:flex-none min-w-[150px]">
+                        <p class="text-xs text-orange-200 uppercase tracking-wider font-semibold mb-1">Time & Date</p>
+                        <p id="clock-time" class="text-2xl font-mono font-bold whitespace-nowrap leading-none">--:--</p>
+                        <p id="clock-date" class="text-xs text-orange-100 mt-1 font-medium opacity-90">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Marquee Notice -->
+        <div id="notice-banner" class="rounded-xl shadow-lg overflow-hidden relative group h-14 flex items-center transition-colors duration-300 bg-blue-600 text-white dark:bg-blue-900 dark:text-blue-100">
+            <div id="notice-label" class="absolute left-0 top-0 bottom-0 z-10 px-4 flex items-center shadow-[4px_0_8px_rgba(0,0,0,0.2)] bg-blue-800 dark:bg-blue-950">
+                <i data-lucide="info" class="w-5 h-5 animate-pulse mr-2"></i>
+                <span class="font-bold text-sm uppercase tracking-wider">Notice</span>
+            </div>
+            <div class="w-full overflow-hidden marquee-container">
+                <div class="marquee-content whitespace-nowrap text-lg font-medium">
+                    New schedule effective from <span class="font-bold text-yellow-300">October 4, 2025</span>. Please carry your student ID. &nbsp; • &nbsp; Authority reserves the right to change the schedule without prior notice.
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div id="tabs-container" class="flex flex-wrap gap-2 p-1 rounded-xl shadow-sm border transition-colors duration-300 bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+            <button onclick="switchTab('notunBazar')" id="tab-notunBazar" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Notun Bazar Route</button>
+            <button onclick="switchTab('ewu')" id="tab-ewu" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">EWU - UIU Route</button>
+            <button onclick="switchTab('kuril')" id="tab-kuril" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Kuril / 300ft Route</button>
+        </div>
+
+        <!-- Main Content (Dynamic) -->
+        <div id="content-area">
+            <!-- Content injected via JS -->
+        </div>
+
+        <!-- Guidelines Grid -->
+        <div class="mt-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2 rounded-lg bg-slate-800">
+                    <i data-lucide="shield" class="w-6 h-6 text-orange-400"></i>
+                </div>
+                <h3 class="text-2xl font-bold transition-colors duration-300 text-slate-800 dark:text-white">Passenger Etiquette & Rules</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1 -->
+                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-blue-50 group-hover:bg-blue-100 dark:bg-blue-900/30 dark:group-hover:bg-blue-900/50">
+                        <i data-lucide="ticket" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">No ID, No Ride</h4>
+                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                        Always carry your valid university Student ID card. It is mandatory for boarding.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-orange-50 group-hover:bg-orange-100 dark:bg-orange-900/30 dark:group-hover:bg-orange-900/50">
+                        <i data-lucide="clock" class="w-6 h-6 text-orange-600 dark:text-orange-400"></i>
+                    </div>
+                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Be Punctual</h4>
+                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                        Buses depart exactly on time. Please arrive at the pickup point 5 minutes early.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-purple-50 group-hover:bg-purple-100 dark:bg-purple-900/30 dark:group-hover:bg-purple-900/50">
+                        <i data-lucide="users" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Queue Policy</h4>
+                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                        Maintain a disciplined queue. Seats are filled on a first-come-first-serve basis.
+                    </p>
+                </div>
+                <!-- Card 4 -->
+                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-green-50 group-hover:bg-green-100 dark:bg-green-900/30 dark:group-hover:bg-green-900/50">
+                        <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                    </div>
+                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Reserved Seating</h4>
+                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                        Please respect the designated seating arrangements for faculty and students.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Banner -->
+        <div id="emergency-banner" class="mt-12 border-l-8 p-6 rounded-r-2xl shadow-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 animate-[pulse_3s_ease-in-out_infinite] group hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-50 via-red-100 to-orange-50 border-red-600 dark:from-red-950 dark:via-red-900 dark:to-orange-950 dark:border-red-700">
+            <div class="p-4 rounded-full shrink-0 group-hover:scale-110 transition-transform bg-red-200/50 dark:bg-red-900/50">
+                <i data-lucide="alert-triangle" class="w-10 h-10 text-red-700 dark:text-red-400"></i>
+            </div>
+            <div class="text-center sm:text-left">
+                <h4 class="text-2xl font-black mb-2 uppercase tracking-tight text-red-900 dark:text-red-200">Emergency & Lost Items</h4>
+                <p class="font-semibold text-lg leading-relaxed text-red-800 dark:text-red-300">
+                    For immediate assistance or to report lost items, please contact the
+                    <span class="font-black uppercase tracking-wider ml-1 text-red-900 dark:text-red-200">
+                     Transport Supervisor
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="text-center py-8 mt-6 border-t transition-colors duration-300 border-slate-200 dark:border-slate-800">
+        <p class="text-sm font-medium text-slate-500">© 2025 Khondokar Intesab Montasir Zidne. All rights reserved.</p>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        // --- DATA ---
+        const SCHEDULE_DATA = {
+          notunBazar: {
+            id: 'notun',
+            name: 'Notun Bazar Route',
+            description: 'Regular service connecting Notun Bazar intersection to UIU Campus.',
+            stops: ['Notun Bazar', 'Family Bazar', 'Sayed Nagar', '10 Tala (Dash Tala)', 'UIU'],
+            schedule: [
+              { from: 'Notun Bazar', time: '07:30 AM - 08:45 AM', note: 'Morning Rush' },
+              { from: 'Notun Bazar', time: '09:25 AM - 09:35 AM' },
+              { from: 'Notun Bazar', time: '10:45 AM - 10:55 AM' },
+              { from: 'Notun Bazar', time: '12:05 PM - 12:15 PM' },
+              { from: 'Notun Bazar', time: '01:25 PM - 01:35 PM' },
+              { from: 'Notun Bazar', time: '02:45 PM - 02:55 PM' },
+              { from: 'Notun Bazar', time: '06:10 PM', note: 'Evening Only' },
+              { from: 'UIU', time: '10:05 AM', type: 'return' },
+              { from: 'UIU', time: '11:25 AM', type: 'return' },
+              { from: 'UIU', time: '12:45 PM', type: 'return' },
+              { from: 'UIU', time: '02:05 PM', type: 'return' },
+              { from: 'UIU', time: '03:25 PM', type: 'return' },
+              { from: 'UIU', time: '04:40 PM', type: 'return' },
+              { from: 'UIU', time: '05:45 PM', type: 'return' },
+              { from: 'UIU', time: '07:00 PM', type: 'return' },
+              { from: 'UIU', time: '09:40 PM', type: 'return' },
+            ]
+          },
+          ewu: {
+            id: 'ewu',
+            name: 'EWU - UIU Route',
+            description: 'Direct route via Swadesh Property Road. 3 Buses operating in rotation.',
+            stops: ['East West University Gate', 'Lohar Bridge', 'Bottola', 'UIU'],
+            contact: { name: 'Mr. Zakir', phone: '01738-420771' },
+            meta: { effectiveDate: '4 October 2025', busCount: 3 },
+            schedule: [
+              { from: 'EWU Gate', time: '06:50 AM - 09:00 AM', note: 'Continuous Service' },
+              { from: 'EWU Gate', time: '10:30 AM' },
+              { from: 'EWU Gate', time: '11:50 AM' },
+              { from: 'EWU Gate', time: '01:10 PM' },
+              { from: 'UIU', time: '02:00 PM', type: 'return' },
+              { from: 'UIU', time: '03:20 PM', type: 'return' },
+              { from: 'UIU', time: '04:40 PM - 06:00 PM', type: 'return', note: 'Continuous Service' },
+            ]
+          },
+          kuril: {
+            id: 'kuril',
+            name: 'Kuril / 300ft Route',
+            description: 'Continuous circular service covering major transit points on 300ft road.',
+            stops: ['UIU Campus', 'Bashundhara City Gold Refinery Gate', '300 Ft Road', 'Kuril BRTC Bus Stand'],
+            schedule: [
+              { from: 'Starting - Outgoing', time: '07:30 AM - 05:00 PM' }
+            ]
+          }
+        };
+
+        // --- STATE ---
+        let activeTab = 'notunBazar';
+        let isDarkMode = false; // Forced Light Mode
+
+        // --- INIT ---
+        function init() {
+            // Disabled System Preference Check to force Light Mode
+            /*
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                isDarkMode = true;
+                applyTheme();
+            }
+            */
+            
+            // Ensure Light Mode is applied
+            document.documentElement.classList.remove('dark');
+
+            // Start Clock
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Fetch Weather
+            fetchWeather();
+            setInterval(fetchWeather, 1800000); // Update every 30 mins
+
+            // Render Initial Content
+            renderContent();
+            
+            // Init Icons
+            lucide.createIcons();
+        }
+
+        // --- FUNCTIONS ---
+
+        function applyTheme() {
+            const html = document.documentElement;
+            
+            if (isDarkMode) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+            lucide.createIcons();
+            // Re-render content to apply specific conditional classes if needed
+            renderContent();
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            
+            document.getElementById('clock-time').textContent = timeString;
+            document.getElementById('clock-date').textContent = dateString;
+        }
+
+        async function fetchWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.7979&longitude=90.4494&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto');
+                const data = await res.json();
+                
+                document.getElementById('weather-temp').textContent = Math.round(data.current.temperature_2m) + '°C';
+                document.getElementById('weather-wind').textContent = data.current.wind_speed_10m + 'km/h';
+                document.getElementById('weather-humidity').textContent = data.current.relative_humidity_2m + '%';
+                
+                // Icon Logic
+                const code = data.current.weather_code;
+                const iconEl = document.getElementById('weather-icon');
+                if (code >= 95) iconEl.setAttribute('data-lucide', 'cloud-lightning');
+                else if (code >= 51) iconEl.setAttribute('data-lucide', 'cloud-rain');
+                else if (code >= 1) iconEl.setAttribute('data-lucide', 'cloud');
+                else iconEl.setAttribute('data-lucide', 'sun');
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Weather data unavailable");
+                document.getElementById('weather-temp').textContent = '--';
+            }
+        }
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            renderContent();
+        }
+
+        function renderContent() {
+            const data = SCHEDULE_DATA[activeTab];
+            const contentArea = document.getElementById('content-area');
+            
+            // Update Tab Buttons Styles
+            ['notunBazar', 'ewu', 'kuril'].forEach(tabId => {
+                const btn = document.getElementById('tab-' + tabId);
+                // Reset classes
+                btn.className = "flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2";
+                
+                if (tabId === activeTab || (tabId === 'notunBazar' && activeTab === 'notun')) {
+                    // Active State
+                    btn.classList.add('shadow-md');
+                    if (isDarkMode) {
+                        btn.classList.add('bg-slate-700', 'text-white');
+                    } else {
+                        btn.classList.add('bg-slate-800', 'text-white');
+                    }
+                } else {
+                    // Inactive State
+                    if (isDarkMode) {
+                        btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                    } else {
+                        btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                    }
+                }
+            });
+
+            // --- Generate Inner HTML ---
+            
+            // 1. Info Card
+            let html = `
+                <div class="rounded-xl shadow-sm border p-6 transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-800'}">
+                                <i data-lucide="navigation" class="w-5 h-5 text-orange-500"></i>
+                                Route Information
+                            </h3>
+                            <p class="mt-2 text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}">${data.description}</p>
+                            
+                            <div class="mt-4">
+                                <h4 class="text-sm font-semibold mb-3 ${isDarkMode ? 'text-slate-200' : 'text-slate-900'}">Stops Covered:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${data.stops.map(stop => `
+                                        <div class="flex items-center text-sm px-3 py-1.5 rounded-full border transition-colors duration-300 ${isDarkMode ? 'bg-slate-700/50 border-slate-600 text-slate-300' : 'bg-slate-50 border-slate-100 text-slate-600'}">
+                                            <div class="w-2 h-2 rounded-full bg-orange-400 mr-2"></div>
+                                            ${stop}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            ${data.meta ? `
+                                <div class="mt-4 flex gap-4 text-xs font-medium text-slate-500">
+                                   ${data.meta.effectiveDate ? `
+                                     <span class="flex items-center gap-1 px-2 py-1 rounded ${isDarkMode ? 'bg-blue-900/30 text-blue-300' : 'bg-blue-50 text-blue-700'}">
+                                       <i data-lucide="calendar" class="w-3 h-3"></i> Effective: ${data.meta.effectiveDate}
+                                     </span>
+                                   ` : ''}
+                                   ${data.meta.busCount ? `
+                                     <span class="flex items-center gap-1 px-2 py-1 rounded ${isDarkMode ? 'bg-green-900/30 text-green-300' : 'bg-green-50 text-green-700'}">
+                                       <i data-lucide="bus" class="w-3 h-3"></i> Fleet: ${data.meta.busCount} Buses
+                                     </span>
+                                   ` : ''}
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        ${data.contact ? `
+                            <div class="p-4 rounded-lg border min-w-[220px] transition-colors duration-300 ${isDarkMode ? 'bg-orange-900/20 border-orange-800/30' : 'bg-orange-50/50 border-orange-100'}">
+                                <h4 class="font-semibold flex items-center gap-2 mb-2 ${isDarkMode ? 'text-orange-200' : 'text-slate-800'}">
+                                    <i data-lucide="phone" class="w-4 h-4 text-green-600"></i>
+                                    Supervisor Contact
+                                </h4>
+                                <div class="space-y-1">
+                                    <p class="font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}">${data.contact.name}</p>
+                                    <a href="tel:${data.contact.phone}" class="text-orange-600 hover:underline font-mono text-sm">
+                                        ${data.contact.phone}
+                                    </a>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // 2. Schedule or Special Layout
+            if (activeTab === 'kuril') {
+                html += `
+                    <div class="mt-6 rounded-xl shadow-sm border overflow-hidden transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+                        <div class="p-6">
+                            <div class="rounded-lg p-6 border flex flex-col sm:flex-row items-center gap-6 transition-colors duration-300 ${isDarkMode ? 'bg-orange-900/10 border-orange-800/30' : 'bg-orange-50 border-orange-100'}">
+                                <div class="p-4 rounded-full shadow-sm ${isDarkMode ? 'bg-slate-700' : 'bg-white'}">
+                                    <i data-lucide="clock" class="w-8 h-8 text-orange-600"></i>
+                                </div>
+                                <div class="text-center sm:text-left">
+                                    <p class="text-sm font-semibold text-orange-800 uppercase tracking-wider mb-1">Operating Hours</p>
+                                    <p class="text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}">07:30 AM - 05:00 PM</p>
+                                    <p class="mt-2 flex items-center justify-center sm:justify-start gap-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}">
+                                        <i data-lucide="info" class="w-4 h-4"></i>
+                                        Continuous circular service
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const outgoing = data.schedule.filter(s => !s.type);
+                const returning = data.schedule.filter(s => s.type === 'return');
+                
+                html += `
+                    <div class="mt-6 grid md:grid-cols-2 gap-6">
+                        <!-- Outgoing Column -->
+                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+                            <div class="p-4 border-b ${isDarkMode ? 'bg-blue-900/20 border-slate-700' : 'bg-blue-50 border-blue-100'}">
+                                <h4 class="font-bold flex items-center gap-2 ${isDarkMode ? 'text-blue-300' : 'text-blue-900'}">
+                                    <span class="p-1.5 rounded-lg ${isDarkMode ? 'bg-blue-900/40' : 'bg-blue-200'}">
+                                        <i data-lucide="bus" class="w-4 h-4 ${isDarkMode ? 'text-blue-300' : 'text-blue-700'}"></i>
+                                    </span>
+                                    From ${outgoing[0]?.from || 'Start'}
+                                </h4>
+                            </div>
+                            <div class="divide-y ${isDarkMode ? 'divide-slate-700' : 'divide-slate-100'}">
+                                ${outgoing.map((item) => `
+                                    <div class="p-4 transition-colors flex items-center justify-between group ${isDarkMode ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50'}">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="clock" class="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
+                                            <span class="font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}">${item.time}</span>
+                                        </div>
+                                        ${item.note ? `
+                                            <span class="text-xs px-2 py-1 rounded-full ${isDarkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500'}">
+                                                ${item.note}
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Returning Column -->
+                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+                            <div class="p-4 border-b ${isDarkMode ? 'bg-green-900/20 border-slate-700' : 'bg-green-50 border-green-100'}">
+                                <h4 class="font-bold flex items-center gap-2 ${isDarkMode ? 'text-green-300' : 'text-green-900'}">
+                                    <span class="p-1.5 rounded-lg ${isDarkMode ? 'bg-green-900/40' : 'bg-green-200'}">
+                                        <i data-lucide="bus" class="w-4 h-4 ${isDarkMode ? 'text-green-300' : 'text-green-700'}"></i>
+                                    </span>
+                                    From UIU
+                                </h4>
+                            </div>
+                            <div class="divide-y ${isDarkMode ? 'divide-slate-700' : 'divide-slate-100'}">
+                                ${returning.map((item) => `
+                                    <div class="p-4 transition-colors flex items-center justify-between group ${isDarkMode ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50'}">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="clock" class="w-4 h-4 text-slate-400 group-hover:text-green-500 transition-colors"></i>
+                                            <span class="font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}">${item.time}</span>
+                                        </div>
+                                        ${item.note ? `
+                                            <span class="text-xs px-2 py-1 rounded-full ${isDarkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500'}">
+                                                ${item.note}
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            contentArea.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Run Init
+        init();
+    </script>
+</body>
+</html>
