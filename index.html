@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UIU Shuttle Service</title>
+    <title>UIU Shuttle Service - Exam Update</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Google Fonts -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
 
@@ -42,9 +39,24 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
+        
+        /* Custom Scrollbar for tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
     
-    <!-- Tailwind Config for Dark Mode -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -52,7 +64,7 @@
                 extend: {
                     colors: {
                         slate: {
-                            750: '#2d3748', /* Custom shade for hover states in dark mode */
+                            750: '#2d3748',
                         }
                     }
                 }
@@ -62,15 +74,12 @@
 </head>
 <body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col p-4 md:p-8 transition-colors duration-300">
 
-    <div class="max-w-5xl mx-auto w-full space-y-6 flex-grow">
+    <div class="max-w-6xl mx-auto w-full space-y-6 flex-grow">
         
-        <!-- Header -->
         <header class="bg-gradient-to-r from-orange-600 to-orange-500 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden transition-all duration-300">
-            <!-- Background Decoration -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                <!-- Logo Area -->
                 <div class="flex items-center gap-4">
                     <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm border border-white/20">
                         <i data-lucide="bus" class="w-8 h-8 text-white"></i>
@@ -84,10 +93,7 @@
                     </div>
                 </div>
                 
-                <!-- Right Side Widgets -->
                 <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
-                    
-                    <!-- Weather Widget -->
                     <div class="bg-orange-700/30 rounded-lg p-3 backdrop-blur-sm border border-orange-400/30 flex items-center gap-3 min-w-[160px]">
                         <div class="p-2 bg-white/10 rounded-lg">
                             <i id="weather-icon" data-lucide="cloud" class="w-6 h-6 text-white"></i>
@@ -101,7 +107,6 @@
                         </div>
                     </div>
 
-                    <!-- Time Widget -->
                     <div class="bg-orange-700/30 rounded-lg p-3 backdrop-blur-sm border border-orange-400/30 flex-1 md:flex-none min-w-[150px]">
                         <p class="text-xs text-orange-200 uppercase tracking-wider font-semibold mb-1">Time & Date</p>
                         <p id="clock-time" class="text-2xl font-mono font-bold whitespace-nowrap leading-none">--:--</p>
@@ -111,110 +116,105 @@
             </div>
         </header>
 
-        <!-- Marquee Notice -->
-        <div id="notice-banner" class="rounded-xl shadow-lg overflow-hidden relative group h-14 flex items-center transition-colors duration-300 bg-blue-600 text-white dark:bg-blue-900 dark:text-blue-100">
-            <div id="notice-label" class="absolute left-0 top-0 bottom-0 z-10 px-4 flex items-center shadow-[4px_0_8px_rgba(0,0,0,0.2)] bg-blue-800 dark:bg-blue-950">
-                <i data-lucide="info" class="w-5 h-5 animate-pulse mr-2"></i>
-                <span class="font-bold text-sm uppercase tracking-wider">Notice</span>
+        <div id="notice-banner" class="rounded-xl shadow-lg overflow-hidden relative group h-14 flex items-center transition-colors duration-300 bg-red-600 text-white dark:bg-red-900 dark:text-red-100">
+            <div id="notice-label" class="absolute left-0 top-0 bottom-0 z-10 px-4 flex items-center shadow-[4px_0_8px_rgba(0,0,0,0.2)] bg-red-800 dark:bg-red-950">
+                <i data-lucide="alert-circle" class="w-5 h-5 animate-pulse mr-2"></i>
+                <span class="font-bold text-sm uppercase tracking-wider">Exam Alert</span>
             </div>
             <div class="w-full overflow-hidden marquee-container">
                 <div class="marquee-content whitespace-nowrap text-lg font-medium">
-                    New schedule effective from <span class="font-bold text-yellow-300">October 4, 2025</span>. Please carry your student ID. &nbsp; • &nbsp; Authority reserves the right to change the schedule without prior notice.
+                    <span class="font-bold text-yellow-300">SPECIAL EXAM SCHEDULE ACTIVE</span> from Dec 21 to Dec 30, 2025. Please check the "Exam Schedule" tab for revised timings. &nbsp; • &nbsp; Regular schedule may be suspended.
                 </div>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
         <div id="tabs-container" class="flex flex-wrap gap-2 p-1 rounded-xl shadow-sm border transition-colors duration-300 bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800">
-            <button onclick="switchTab('notunBazar')" id="tab-notunBazar" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Notun Bazar Route</button>
-            <button onclick="switchTab('ewu')" id="tab-ewu" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">EWU - UIU Route</button>
-            <button onclick="switchTab('kuril')" id="tab-kuril" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Kuril / 300ft Route</button>
+            <button onclick="switchTab('examSchedule')" id="tab-examSchedule" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 ring-2 ring-red-500 ring-offset-2 ring-offset-slate-100 dark:ring-offset-slate-900">
+                <i data-lucide="calendar-clock" class="w-4 h-4"></i> Exam Schedule
+            </button>
+            <button onclick="switchTab('notunBazar')" id="tab-notunBazar" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Notun Bazar</button>
+            <button onclick="switchTab('ewu')" id="tab-ewu" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">EWU Route</button>
+            <button onclick="switchTab('kuril')" id="tab-kuril" class="flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">Kuril / 300ft</button>
         </div>
 
-        <!-- Main Content (Dynamic) -->
         <div id="content-area">
-            <!-- Content injected via JS -->
-        </div>
+            </div>
 
-        <!-- Guidelines Grid -->
-        <div class="mt-8">
+        <div class="mt-8 border-t pt-8 border-slate-200 dark:border-slate-800">
             <div class="flex items-center gap-3 mb-6">
                 <div class="p-2 rounded-lg bg-slate-800">
                     <i data-lucide="shield" class="w-6 h-6 text-orange-400"></i>
                 </div>
-                <h3 class="text-2xl font-bold transition-colors duration-300 text-slate-800 dark:text-white">Passenger Etiquette & Rules</h3>
+                <h3 class="text-xl md:text-2xl font-bold transition-colors duration-300 text-slate-800 dark:text-white">Passenger Etiquette</h3>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Card 1 -->
-                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-blue-50 group-hover:bg-blue-100 dark:bg-blue-900/30 dark:group-hover:bg-blue-900/50">
-                        <i data-lucide="ticket" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                <div class="p-4 rounded-xl shadow-sm border bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="ticket" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">No ID, No Ride</h4>
                     </div>
-                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">No ID, No Ride</h4>
-                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                        Always carry your valid university Student ID card. It is mandatory for boarding.
-                    </p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Carry your valid student ID card.</p>
                 </div>
-                <!-- Card 2 -->
-                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-orange-50 group-hover:bg-orange-100 dark:bg-orange-900/30 dark:group-hover:bg-orange-900/50">
-                        <i data-lucide="clock" class="w-6 h-6 text-orange-600 dark:text-orange-400"></i>
+                <div class="p-4 rounded-xl shadow-sm border bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="clock" class="w-5 h-5 text-orange-600 dark:text-orange-400"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">Be Punctual</h4>
                     </div>
-                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Be Punctual</h4>
-                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                        Buses depart exactly on time. Please arrive at the pickup point 5 minutes early.
-                    </p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Arrive 5 mins before departure.</p>
                 </div>
-                <!-- Card 3 -->
-                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-purple-50 group-hover:bg-purple-100 dark:bg-purple-900/30 dark:group-hover:bg-purple-900/50">
-                        <i data-lucide="users" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
+                <div class="p-4 rounded-xl shadow-sm border bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="users" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">Queue Policy</h4>
                     </div>
-                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Queue Policy</h4>
-                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                        Maintain a disciplined queue. Seats are filled on a first-come-first-serve basis.
-                    </p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">First-come-first-serve basis.</p>
                 </div>
-                <!-- Card 4 -->
-                <div class="p-6 rounded-2xl shadow-sm border transition-all group hover:shadow-md bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-750">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors bg-green-50 group-hover:bg-green-100 dark:bg-green-900/30 dark:group-hover:bg-green-900/50">
-                        <i data-lucide="check-circle-2" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                <div class="p-4 rounded-xl shadow-sm border bg-white border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">Reserved Seats</h4>
                     </div>
-                    <h4 class="font-bold mb-2 text-slate-800 dark:text-white">Reserved Seating</h4>
-                    <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                        Please respect the designated seating arrangements for faculty and students.
-                    </p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Respect designated seating.</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Emergency Banner -->
-        <div id="emergency-banner" class="mt-12 border-l-8 p-6 rounded-r-2xl shadow-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 animate-[pulse_3s_ease-in-out_infinite] group hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-red-50 via-red-100 to-orange-50 border-red-600 dark:from-red-950 dark:via-red-900 dark:to-orange-950 dark:border-red-700">
-            <div class="p-4 rounded-full shrink-0 group-hover:scale-110 transition-transform bg-red-200/50 dark:bg-red-900/50">
-                <i data-lucide="alert-triangle" class="w-10 h-10 text-red-700 dark:text-red-400"></i>
-            </div>
-            <div class="text-center sm:text-left">
-                <h4 class="text-2xl font-black mb-2 uppercase tracking-tight text-red-900 dark:text-red-200">Emergency & Lost Items</h4>
-                <p class="font-semibold text-lg leading-relaxed text-red-800 dark:text-red-300">
-                    For immediate assistance or to report lost items, please contact the
-                    <span class="font-black uppercase tracking-wider ml-1 text-red-900 dark:text-red-200">
-                     Transport Supervisor
-                    </span>
-                </p>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer id="footer" class="text-center py-8 mt-6 border-t transition-colors duration-300 border-slate-200 dark:border-slate-800">
         <p class="text-sm font-medium text-slate-500">© 2025 Khondokar Intesab Montasir Zidne. All rights reserved.</p>
     </footer>
 
-    <!-- Application Logic -->
     <script>
         // --- DATA ---
         const SCHEDULE_DATA = {
+          examSchedule: {
+            id: 'exam',
+            name: 'Exam Schedule',
+            description: 'Special Shuttle Schedule for Final Exams (Dec 21 - Dec 30, 2025).',
+            undergrad: {
+                dates: "21, 22, 23, 24, 28, 29, 30 December 2025",
+                schedule: [
+                    { exam: "09:00 AM - 11:00 AM", notun: "07:30 AM - 08:40 AM", kuril: "07:30 AM - 08:40 AM", aftab: "07:10 AM - 08:20 AM", uiu: "11:10 AM" },
+                    { exam: "11:30 AM - 01:30 PM", notun: "10:00 AM - 11:10 AM", kuril: "10:00 AM - 11:10 AM", aftab: "09:40 AM - 10:50 AM", uiu: "01:40 PM" },
+                    { exam: "02:00 PM - 04:00 PM", notun: "12:30 PM - 01:40 PM", kuril: "12:30 PM - 01:40 PM", aftab: "12:10 PM - 01:20 PM", uiu: "04:10 PM" }
+                ]
+            },
+            grad: {
+                schedule: [
+                    { date: "22, 23 & 24 December 2025", exam: "07:00 PM", notun: "06:00 PM - 06:40 PM", uiu: "09:10 PM" },
+                    { date: "Dec 28, 2025", exam: "02:30 PM - 04:30 PM", notun: "01:45 PM - 02:10 PM", uiu: "04:40 PM" },
+                    { date: "Dec 28, 2025", exam: "07:00 PM", notun: "06:00 PM - 06:40 PM", uiu: "09:10 PM" },
+                    { date: "Dec 29, 2025", exam: "09:00 AM - 11:00 AM", notun: "07:30 AM - 08:40 AM", uiu: "11:10 AM" },
+                    { date: "Dec 29, 2025", exam: "07:00 PM", notun: "06:00 PM - 06:40 PM", uiu: "09:10 PM" }
+                ]
+            },
+            points: [
+                { route: "UIU - Notun Bazar", stops: ["Notun Bazar", "Family Bazar (Both sides)", "Sayed Nagar (Both sides)", "Dosh Tala (Both sides)", "UIU"] },
+                { route: "UIU - Kuril", stops: ["Kuril BRTC Bus Stand", "Bashundhara City Gold Refinery Gate", "Bashundhara City Bitumin Gate", "UIU"] },
+                { route: "UIU - Aftab Nagar", stops: ["EWU Gate", "Lohar Bridge", "Meradia Point", "Bottala", "UIU"] }
+            ]
+          },
           notunBazar: {
             id: 'notun',
             name: 'Notun Bazar Route',
@@ -268,21 +268,16 @@
         };
 
         // --- STATE ---
-        let activeTab = 'notunBazar';
-        let isDarkMode = false; // Forced Light Mode
+        let activeTab = 'examSchedule'; // Default to Exam Schedule
+        let isDarkMode = false; 
 
         // --- INIT ---
         function init() {
-            // Disabled System Preference Check to force Light Mode
-            /*
+            // Check Dark Mode
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                isDarkMode = true;
-                applyTheme();
+               // isDarkMode = true; // Auto-detect disabled to keep UI consistent, uncomment to enable
             }
-            */
-            
-            // Ensure Light Mode is applied
-            document.documentElement.classList.remove('dark');
+            applyTheme();
 
             // Start Clock
             updateTime();
@@ -303,14 +298,9 @@
 
         function applyTheme() {
             const html = document.documentElement;
-            
-            if (isDarkMode) {
-                html.classList.add('dark');
-            } else {
-                html.classList.remove('dark');
-            }
+            if (isDarkMode) html.classList.add('dark');
+            else html.classList.remove('dark');
             lucide.createIcons();
-            // Re-render content to apply specific conditional classes if needed
             renderContent();
         }
 
@@ -357,78 +347,154 @@
             const contentArea = document.getElementById('content-area');
             
             // Update Tab Buttons Styles
-            ['notunBazar', 'ewu', 'kuril'].forEach(tabId => {
+            ['examSchedule', 'notunBazar', 'ewu', 'kuril'].forEach(tabId => {
                 const btn = document.getElementById('tab-' + tabId);
-                // Reset classes
-                btn.className = "flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2";
+                btn.className = "flex-1 min-w-[140px] py-3 px-4 rounded-lg text-sm transition-all duration-200 flex items-center justify-center gap-2 border";
                 
-                if (tabId === activeTab || (tabId === 'notunBazar' && activeTab === 'notun')) {
-                    // Active State
-                    btn.classList.add('shadow-md');
-                    if (isDarkMode) {
-                        btn.classList.add('bg-slate-700', 'text-white');
+                if (tabId === activeTab) {
+                    btn.classList.add('shadow-md', 'font-bold', 'border-transparent');
+                    if(tabId === 'examSchedule') {
+                        btn.classList.add('bg-red-600', 'text-white');
                     } else {
                         btn.classList.add('bg-slate-800', 'text-white');
                     }
                 } else {
-                    // Inactive State
-                    if (isDarkMode) {
-                        btn.classList.add('text-slate-400', 'hover:bg-slate-800');
-                    } else {
-                        btn.classList.add('text-slate-600', 'hover:bg-slate-50');
-                    }
+                    btn.classList.add('font-medium', 'bg-white', 'text-slate-600', 'border-slate-200', 'hover:bg-slate-50');
                 }
             });
 
-            // --- Generate Inner HTML ---
+            // --- Generate HTML ---
+            let html = '';
+
+            // SPECIAL EXAM LAYOUT
+            if (activeTab === 'examSchedule') {
+                html = `
+                    <div class="space-y-8">
+                        <div class="rounded-xl p-6 bg-white border border-slate-200 shadow-sm">
+                            <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                                <i data-lucide="file-clock" class="w-6 h-6 text-red-500"></i>
+                                ${data.name}
+                            </h2>
+                            <p class="text-slate-600 mt-2">${data.description}</p>
+                        </div>
+
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white">
+                            <div class="bg-orange-50 p-4 border-b border-orange-100">
+                                <h3 class="font-bold text-orange-900 text-lg">Undergraduate Program</h3>
+                                <p class="text-sm text-orange-700 mt-1">Dates: ${data.undergrad.dates}</p>
+                            </div>
+                            <div class="overflow-x-auto custom-scrollbar">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-50 text-slate-700 font-bold uppercase text-xs">
+                                        <tr>
+                                            <th class="px-6 py-4 whitespace-nowrap bg-blue-50/50">Exam Schedule</th>
+                                            <th class="px-6 py-4 whitespace-nowrap">From Notun Bazar</th>
+                                            <th class="px-6 py-4 whitespace-nowrap">From Kuril</th>
+                                            <th class="px-6 py-4 whitespace-nowrap">From Aftab Nagar</th>
+                                            <th class="px-6 py-4 whitespace-nowrap bg-green-50/50">From UIU</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${data.undergrad.schedule.map(row => `
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-6 py-4 font-bold text-slate-800 bg-blue-50/20">${row.exam}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">${row.notun}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">${row.kuril}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">${row.aftab}</td>
+                                                <td class="px-6 py-4 font-bold text-green-700 bg-green-50/20">${row.uiu}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white">
+                            <div class="bg-purple-50 p-4 border-b border-purple-100">
+                                <h3 class="font-bold text-purple-900 text-lg">Graduate Program</h3>
+                            </div>
+                            <div class="overflow-x-auto custom-scrollbar">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-50 text-slate-700 font-bold uppercase text-xs">
+                                        <tr>
+                                            <th class="px-6 py-4 whitespace-nowrap">Date of Exam</th>
+                                            <th class="px-6 py-4 whitespace-nowrap bg-blue-50/50">Exam Schedule</th>
+                                            <th class="px-6 py-4 whitespace-nowrap">From Notun Bazar</th>
+                                            <th class="px-6 py-4 whitespace-nowrap bg-green-50/50">From UIU</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${data.grad.schedule.map(row => `
+                                            <tr class="hover:bg-slate-50 transition-colors">
+                                                <td class="px-6 py-4 font-medium text-slate-600">${row.date}</td>
+                                                <td class="px-6 py-4 font-bold text-slate-800 bg-blue-50/20">${row.exam}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">${row.notun}</td>
+                                                <td class="px-6 py-4 font-bold text-green-700 bg-green-50/20">${row.uiu}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div>
+                             <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-slate-500"></i>
+                                Pickup / Drop off Points
+                             </h3>
+                             <div class="grid md:grid-cols-3 gap-6">
+                                ${data.points.map(point => `
+                                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                        <h4 class="font-bold text-slate-800 mb-3 border-b pb-2">${point.route}</h4>
+                                        <ul class="space-y-2">
+                                            ${point.stops.map(stop => `
+                                                <li class="text-sm text-slate-600 flex items-start gap-2">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 shrink-0"></span>
+                                                    ${stop}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                `).join('')}
+                             </div>
+                        </div>
+                    </div>
+                `;
+            } 
             
-            // 1. Info Card
-            let html = `
-                <div class="rounded-xl shadow-sm border p-6 transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+            // REGULAR LAYOUTS
+            else {
+                // Info Card
+                html += `
+                <div class="rounded-xl shadow-sm border p-6 transition-colors duration-300 bg-white border-slate-200">
                     <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
                         <div class="flex-1">
-                            <h3 class="text-xl font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-800'}">
+                            <h3 class="text-xl font-bold flex items-center gap-2 text-slate-800">
                                 <i data-lucide="navigation" class="w-5 h-5 text-orange-500"></i>
                                 Route Information
                             </h3>
-                            <p class="mt-2 text-sm leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}">${data.description}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-600">${data.description}</p>
                             
                             <div class="mt-4">
-                                <h4 class="text-sm font-semibold mb-3 ${isDarkMode ? 'text-slate-200' : 'text-slate-900'}">Stops Covered:</h4>
+                                <h4 class="text-sm font-semibold mb-3 text-slate-900">Stops Covered:</h4>
                                 <div class="flex flex-wrap gap-2">
                                     ${data.stops.map(stop => `
-                                        <div class="flex items-center text-sm px-3 py-1.5 rounded-full border transition-colors duration-300 ${isDarkMode ? 'bg-slate-700/50 border-slate-600 text-slate-300' : 'bg-slate-50 border-slate-100 text-slate-600'}">
+                                        <div class="flex items-center text-sm px-3 py-1.5 rounded-full border transition-colors duration-300 bg-slate-50 border-slate-100 text-slate-600">
                                             <div class="w-2 h-2 rounded-full bg-orange-400 mr-2"></div>
                                             ${stop}
                                         </div>
                                     `).join('')}
                                 </div>
                             </div>
-
-                            ${data.meta ? `
-                                <div class="mt-4 flex gap-4 text-xs font-medium text-slate-500">
-                                   ${data.meta.effectiveDate ? `
-                                     <span class="flex items-center gap-1 px-2 py-1 rounded ${isDarkMode ? 'bg-blue-900/30 text-blue-300' : 'bg-blue-50 text-blue-700'}">
-                                       <i data-lucide="calendar" class="w-3 h-3"></i> Effective: ${data.meta.effectiveDate}
-                                     </span>
-                                   ` : ''}
-                                   ${data.meta.busCount ? `
-                                     <span class="flex items-center gap-1 px-2 py-1 rounded ${isDarkMode ? 'bg-green-900/30 text-green-300' : 'bg-green-50 text-green-700'}">
-                                       <i data-lucide="bus" class="w-3 h-3"></i> Fleet: ${data.meta.busCount} Buses
-                                     </span>
-                                   ` : ''}
-                                </div>
-                            ` : ''}
                         </div>
-
-                        ${data.contact ? `
-                            <div class="p-4 rounded-lg border min-w-[220px] transition-colors duration-300 ${isDarkMode ? 'bg-orange-900/20 border-orange-800/30' : 'bg-orange-50/50 border-orange-100'}">
-                                <h4 class="font-semibold flex items-center gap-2 mb-2 ${isDarkMode ? 'text-orange-200' : 'text-slate-800'}">
+                         ${data.contact ? `
+                            <div class="p-4 rounded-lg border min-w-[220px] transition-colors duration-300 bg-orange-50/50 border-orange-100">
+                                <h4 class="font-semibold flex items-center gap-2 mb-2 text-slate-800">
                                     <i data-lucide="phone" class="w-4 h-4 text-green-600"></i>
                                     Supervisor Contact
                                 </h4>
                                 <div class="space-y-1">
-                                    <p class="font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}">${data.contact.name}</p>
+                                    <p class="font-medium text-slate-700">${data.contact.name}</p>
                                     <a href="tel:${data.contact.phone}" class="text-orange-600 hover:underline font-mono text-sm">
                                         ${data.contact.phone}
                                     </a>
@@ -436,22 +502,20 @@
                             </div>
                         ` : ''}
                     </div>
-                </div>
-            `;
+                </div>`;
 
-            // 2. Schedule or Special Layout
-            if (activeTab === 'kuril') {
-                html += `
-                    <div class="mt-6 rounded-xl shadow-sm border overflow-hidden transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
+                if (activeTab === 'kuril') {
+                     html += `
+                    <div class="mt-6 rounded-xl shadow-sm border overflow-hidden transition-colors duration-300 bg-white border-slate-200">
                         <div class="p-6">
-                            <div class="rounded-lg p-6 border flex flex-col sm:flex-row items-center gap-6 transition-colors duration-300 ${isDarkMode ? 'bg-orange-900/10 border-orange-800/30' : 'bg-orange-50 border-orange-100'}">
-                                <div class="p-4 rounded-full shadow-sm ${isDarkMode ? 'bg-slate-700' : 'bg-white'}">
+                            <div class="rounded-lg p-6 border flex flex-col sm:flex-row items-center gap-6 transition-colors duration-300 bg-orange-50 border-orange-100">
+                                <div class="p-4 rounded-full shadow-sm bg-white">
                                     <i data-lucide="clock" class="w-8 h-8 text-orange-600"></i>
                                 </div>
                                 <div class="text-center sm:text-left">
                                     <p class="text-sm font-semibold text-orange-800 uppercase tracking-wider mb-1">Operating Hours</p>
-                                    <p class="text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}">07:30 AM - 05:00 PM</p>
-                                    <p class="mt-2 flex items-center justify-center sm:justify-start gap-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}">
+                                    <p class="text-3xl font-bold text-slate-800">07:30 AM - 05:00 PM</p>
+                                    <p class="mt-2 flex items-center justify-center sm:justify-start gap-2 text-slate-600">
                                         <i data-lucide="info" class="w-4 h-4"></i>
                                         Continuous circular service
                                     </p>
@@ -460,31 +524,30 @@
                         </div>
                     </div>
                 `;
-            } else {
-                const outgoing = data.schedule.filter(s => !s.type);
-                const returning = data.schedule.filter(s => s.type === 'return');
-                
-                html += `
+                } else {
+                    const outgoing = data.schedule.filter(s => !s.type);
+                    const returning = data.schedule.filter(s => s.type === 'return');
+                    
+                    html += `
                     <div class="mt-6 grid md:grid-cols-2 gap-6">
-                        <!-- Outgoing Column -->
-                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
-                            <div class="p-4 border-b ${isDarkMode ? 'bg-blue-900/20 border-slate-700' : 'bg-blue-50 border-blue-100'}">
-                                <h4 class="font-bold flex items-center gap-2 ${isDarkMode ? 'text-blue-300' : 'text-blue-900'}">
-                                    <span class="p-1.5 rounded-lg ${isDarkMode ? 'bg-blue-900/40' : 'bg-blue-200'}">
-                                        <i data-lucide="bus" class="w-4 h-4 ${isDarkMode ? 'text-blue-300' : 'text-blue-700'}"></i>
+                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col bg-white border-slate-200">
+                            <div class="p-4 border-b bg-blue-50 border-blue-100">
+                                <h4 class="font-bold flex items-center gap-2 text-blue-900">
+                                    <span class="p-1.5 rounded-lg bg-blue-200">
+                                        <i data-lucide="bus" class="w-4 h-4 text-blue-700"></i>
                                     </span>
                                     From ${outgoing[0]?.from || 'Start'}
                                 </h4>
                             </div>
-                            <div class="divide-y ${isDarkMode ? 'divide-slate-700' : 'divide-slate-100'}">
+                            <div class="divide-y divide-slate-100">
                                 ${outgoing.map((item) => `
-                                    <div class="p-4 transition-colors flex items-center justify-between group ${isDarkMode ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50'}">
+                                    <div class="p-4 transition-colors flex items-center justify-between group hover:bg-slate-50">
                                         <div class="flex items-center gap-3">
                                             <i data-lucide="clock" class="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-                                            <span class="font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}">${item.time}</span>
+                                            <span class="font-medium text-slate-700">${item.time}</span>
                                         </div>
                                         ${item.note ? `
-                                            <span class="text-xs px-2 py-1 rounded-full ${isDarkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500'}">
+                                            <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500">
                                                 ${item.note}
                                             </span>
                                         ` : ''}
@@ -493,25 +556,24 @@
                             </div>
                         </div>
 
-                        <!-- Returning Column -->
-                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col transition-colors duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}">
-                            <div class="p-4 border-b ${isDarkMode ? 'bg-green-900/20 border-slate-700' : 'bg-green-50 border-green-100'}">
-                                <h4 class="font-bold flex items-center gap-2 ${isDarkMode ? 'text-green-300' : 'text-green-900'}">
-                                    <span class="p-1.5 rounded-lg ${isDarkMode ? 'bg-green-900/40' : 'bg-green-200'}">
-                                        <i data-lucide="bus" class="w-4 h-4 ${isDarkMode ? 'text-green-300' : 'text-green-700'}"></i>
+                        <div class="rounded-xl shadow-sm border overflow-hidden flex flex-col bg-white border-slate-200">
+                            <div class="p-4 border-b bg-green-50 border-green-100">
+                                <h4 class="font-bold flex items-center gap-2 text-green-900">
+                                    <span class="p-1.5 rounded-lg bg-green-200">
+                                        <i data-lucide="bus" class="w-4 h-4 text-green-700"></i>
                                     </span>
                                     From UIU
                                 </h4>
                             </div>
-                            <div class="divide-y ${isDarkMode ? 'divide-slate-700' : 'divide-slate-100'}">
+                            <div class="divide-y divide-slate-100">
                                 ${returning.map((item) => `
-                                    <div class="p-4 transition-colors flex items-center justify-between group ${isDarkMode ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50'}">
+                                    <div class="p-4 transition-colors flex items-center justify-between group hover:bg-slate-50">
                                         <div class="flex items-center gap-3">
                                             <i data-lucide="clock" class="w-4 h-4 text-slate-400 group-hover:text-green-500 transition-colors"></i>
-                                            <span class="font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}">${item.time}</span>
+                                            <span class="font-medium text-slate-700">${item.time}</span>
                                         </div>
                                         ${item.note ? `
-                                            <span class="text-xs px-2 py-1 rounded-full ${isDarkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-500'}">
+                                            <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500">
                                                 ${item.note}
                                             </span>
                                         ` : ''}
@@ -519,8 +581,8 @@
                                 `).join('')}
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
+                }
             }
 
             contentArea.innerHTML = html;
